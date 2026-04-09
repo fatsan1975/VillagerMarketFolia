@@ -4,6 +4,7 @@ import net.bestemor.core.config.ConfigManager;
 import net.bestemor.villagermarket.VMPlugin;
 import net.bestemor.villagermarket.event.interact.CreateShopItemsEvent;
 import net.bestemor.villagermarket.shop.*;
+import net.bestemor.villagermarket.utils.TaskScheduler;
 import net.bestemor.villagermarket.utils.VMUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -130,7 +131,7 @@ public class Shopfront {
         for (UUID uuid : customerInventories.keySet()) {
             Player p = Bukkit.getPlayer(uuid);
             if (p != null && customerInventories.get(uuid) != null) {
-                Bukkit.getScheduler().runTask(plugin, () -> {
+                TaskScheduler.runSync(plugin, () -> {
                     if (customerInventories.containsKey(uuid)) {
                         customerInventories.get(uuid).setContents(getCustomerInventory(p).getContents());
                     }
@@ -211,7 +212,7 @@ public class Shopfront {
             case DETAILED:
                 player.openInventory(detailedInventory);
         }
-        Bukkit.getScheduler().runTaskLater(plugin, () -> {
+        TaskScheduler.runSyncLater(plugin, () -> {
             Bukkit.getPluginManager().registerEvents(new ClickListener(player, type), plugin);
         }, 1L);
     }
@@ -336,7 +337,7 @@ public class Shopfront {
                             }
                             DropListener dropListener = new DropListener(player);
                             Bukkit.getPluginManager().registerEvents(dropListener, plugin);
-                            Bukkit.getScheduler().runTaskLater(plugin, () -> HandlerList.unregisterAll(dropListener), 10L);
+                            TaskScheduler.runSyncLater(plugin, () -> HandlerList.unregisterAll(dropListener), 10L);
 
                             event.getView().close();
                         } else {
@@ -358,7 +359,7 @@ public class Shopfront {
                         } else {
                             if (mode == ItemMode.COMMAND && shop instanceof AdminShop adminShop) {
                                 adminShop.buyCommand(player, shopItem);
-                                Bukkit.getScheduler().runTaskAsynchronously(plugin, Shopfront.this::update);
+                                TaskScheduler.runAsync(plugin, Shopfront.this::update);
                                 return;
                             }
                             switch (mode) {
@@ -369,7 +370,7 @@ public class Shopfront {
                                     shop.sellItem(shopItem, shopItem.getAmount(), player);
                                     break;
                             }
-                            Bukkit.getScheduler().runTaskAsynchronously(plugin, Shopfront.this::update);
+                            TaskScheduler.runAsync(plugin, Shopfront.this::update);
                         }
                         break;
                     case DETAILED:

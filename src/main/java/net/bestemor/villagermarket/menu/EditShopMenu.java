@@ -7,8 +7,8 @@ import net.bestemor.villagermarket.shop.AdminShop;
 import net.bestemor.villagermarket.shop.PlayerShop;
 import net.bestemor.villagermarket.shop.ShopMenu;
 import net.bestemor.villagermarket.shop.VillagerShop;
+import net.bestemor.villagermarket.utils.TaskScheduler;
 import net.milkbowl.vault.economy.Economy;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
@@ -138,7 +138,7 @@ public class EditShopMenu extends Menu {
                         .replace("%player%", player.getName())
                         .replace("%custom_name%", name) : name;
 
-                Bukkit.getScheduler().runTask(plugin, () -> shop.setShopName(customName));
+                TaskScheduler.runSync(plugin, () -> shop.setShopName(customName));
 
                 player.sendMessage(ConfigManager.getMessage("messages.change_name_set").replace("%name%", name));
             });

@@ -5,6 +5,7 @@ import net.bestemor.core.config.ConfigManager;
 import net.bestemor.core.config.VersionUtils;
 import net.bestemor.villagermarket.VMPlugin;
 import net.bestemor.villagermarket.menu.Shopfront;
+import net.bestemor.villagermarket.utils.TaskScheduler;
 import net.bestemor.villagermarket.utils.VMUtils;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
@@ -30,13 +31,14 @@ import java.io.File;
 import java.io.IOException;
 import java.time.Instant;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
 
 public class ShopManager {
 
     private final VMPlugin plugin;
-    private final Map<UUID, VillagerShop> shops = new HashMap<>();
+    private final Map<UUID, VillagerShop> shops = new ConcurrentHashMap<>();
     private final List<String> blackList;
 
     private Instant nextAutoDiscount = Instant.now();
@@ -257,7 +259,7 @@ public class ShopManager {
     public void reloadAll() {
         closeAllShopfronts();
 
-        Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
+        TaskScheduler.runAsync(plugin, () -> {
             saveAll();
             load();
         });
@@ -276,7 +278,7 @@ public class ShopManager {
      */
     private void beginSaveThread() {
         long interval = 20 * 60L * Math.max(1, ConfigManager.getInt("auto_save_interval"));
-        Bukkit.getScheduler().runTaskTimerAsynchronously(plugin, () -> {
+        TaskScheduler.runAsyncTimer(plugin, () -> {
             if (!plugin.isEnabled()) {
                 return;
             }
@@ -302,7 +304,7 @@ public class ShopManager {
     private void beginExpireThread() {
         long interval = 20L * ConfigManager.getInt("expire_check_interval");
 
-        Bukkit.getScheduler().runTaskTimerAsynchronously(plugin, this::checkExpirations, 20L, interval);
+        TaskScheduler.runAsyncTimer(plugin, this::checkExpirations, 20L, interval);
     }
 
     private void checkExpirations() {
@@ -318,7 +320,12 @@ public class ShopManager {
             if (villagerShop instanceof PlayerShop playerShop) {
 
                 if (playerShop.hasExpired() && playerShop.hasOwner()) {
-                    Bukkit.getScheduler().runTask(plugin, playerShop::abandon);
+                    Entity entity = VMUtils.getEntity(playerShop.getEntityUUID());
+                    if (entity != null) {
+                        TaskScheduler.runAtLocation(plugin, entity.getLocation(), playerShop::abandon);
+                    } else {
+                        TaskScheduler.runSync(plugin, playerShop::abandon);
+                    }
                 }
             } else {
                 for (ShopItem item : villagerShop.getShopfrontHolder().getItemList().values()) {

@@ -5,6 +5,7 @@ version: 1.13.2
 author: Bestem0r
 description: A plugin made by Bestem0r to create Villager Shops
 api-version: 1.13
+folia-supported: true
 depend: [ Vault ]
 softdepend:
   - Essentials
