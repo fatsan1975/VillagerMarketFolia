@@ -8,6 +8,7 @@ import net.bestemor.villagermarket.command.subcommand.*;
 import net.bestemor.villagermarket.listener.EntityListener;
 import net.bestemor.villagermarket.listener.PlayerListener;
 import net.bestemor.villagermarket.shop.ShopManager;
+import net.bestemor.villagermarket.utils.TaskScheduler;
 import net.milkbowl.vault.economy.Economy;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
@@ -43,7 +44,7 @@ public class VMPlugin extends CorePlugin {
         setupCommands();
 
         this.shopManager = new ShopManager(this);
-        Bukkit.getScheduler().runTaskAsynchronously(this, shopManager::load);
+        TaskScheduler.runAsync(this, shopManager::load);
 
         this.playerListener = new PlayerListener(this);
         registerEvents();
@@ -53,7 +54,7 @@ public class VMPlugin extends CorePlugin {
 
         //Bukkit.getLogger().warning("[VillagerMarket] §cYou are running a §aBETA 1.13.0-#3 of VillagerMarket! Please expect and report all bugs in my discord server");
 
-        Bukkit.getScheduler().runTaskLater(this, () -> {
+        TaskScheduler.runSyncLater(this, () -> {
             if (Bukkit.getPluginManager().getPlugin("VillagerBank") != null) {
                 Bukkit.getLogger().info("[VillagerMarket] Nice to see you Villager Bank!");
                 Bukkit.getLogger().info("[VillagerBank] You too Villager Market!");

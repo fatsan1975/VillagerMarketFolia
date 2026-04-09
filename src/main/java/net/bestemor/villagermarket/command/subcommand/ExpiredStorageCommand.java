@@ -4,6 +4,7 @@ import net.bestemor.core.command.ISubCommand;
 import net.bestemor.core.config.ConfigManager;
 import net.bestemor.villagermarket.VMPlugin;
 import net.bestemor.villagermarket.menu.StorageHolder;
+import net.bestemor.villagermarket.utils.TaskScheduler;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
@@ -49,13 +50,13 @@ public class ExpiredStorageCommand implements ISubCommand {
             player.closeInventory();
             final UUID finalStorageUUID = storageUUID;
 
-            Bukkit.getScheduler().runTaskLater(plugin, () -> {
+            TaskScheduler.runSyncLater(plugin, () -> {
                 if (plugin.getShopManager().getExpiredStorages().containsKey(finalStorageUUID)) {
                     final StorageHolder holder = new StorageHolder(plugin, 0);
                     holder.setAddingAllowed(false);
                     holder.loadItems(plugin.getShopManager().getExpiredStorages().get(finalStorageUUID));
 
-                    holder.setClickEvent(() -> Bukkit.getScheduler().runTaskLater(plugin, () -> {
+                    holder.setClickEvent(() -> TaskScheduler.runSyncLater(plugin, () -> {
                         List<ItemStack> items = holder.getItems();
                         if (items.isEmpty()) {
                             plugin.getShopManager().getExpiredStorages().remove(finalStorageUUID);
