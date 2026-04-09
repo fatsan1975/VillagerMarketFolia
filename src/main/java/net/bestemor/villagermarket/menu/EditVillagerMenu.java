@@ -5,8 +5,8 @@ import net.bestemor.core.menu.*;
 import net.bestemor.villagermarket.VMPlugin;
 import net.bestemor.villagermarket.shop.ShopMenu;
 import net.bestemor.villagermarket.shop.VillagerShop;
+import net.bestemor.villagermarket.utils.TaskScheduler;
 import net.bestemor.villagermarket.utils.VMUtils;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Villager;
 
@@ -51,7 +51,7 @@ public class EditVillagerMenu extends Menu {
                 player.sendMessage(ConfigManager.getMessage("messages.type_skin"));
 
                 plugin.getChatListener().addStringListener(player, (result) -> {
-                    Bukkit.getScheduler().runTask(plugin, () -> shop.setCitizensSkin(result));
+                    TaskScheduler.runSync(plugin, () -> shop.setCitizensSkin(result));
                     player.sendMessage(ConfigManager.getMessage("messages.skin_set"));
                 });
 

@@ -4,6 +4,7 @@ import net.bestemor.villagermarket.VMPlugin;
 import net.bestemor.villagermarket.shop.AdminShop;
 import net.bestemor.villagermarket.shop.ShopItem;
 import net.bestemor.villagermarket.shop.VillagerShop;
+import net.bestemor.villagermarket.utils.TaskScheduler;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
@@ -84,7 +85,7 @@ public class ShopfrontHolder {
     }
 
     public void update() {
-        Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
+        TaskScheduler.runAsync(plugin, () -> {
             if (isInfinite) {
                 int updatedMidPages = getItemList().keySet().stream().mapToInt(v -> v).max().orElse(0) / 45;
                 if (updatedMidPages > midPages) {

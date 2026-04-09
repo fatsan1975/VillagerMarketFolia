@@ -1,6 +1,7 @@
 package net.bestemor.villagermarket.shop;
 
 import net.bestemor.villagermarket.VMPlugin;
+import net.bestemor.villagermarket.utils.TaskScheduler;
 import net.bestemor.villagermarket.utils.VMUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -39,7 +40,7 @@ public class EntityInfo {
 
     public void save() {
         if (plugin.isEnabled()) {
-            Bukkit.getScheduler().runTask(plugin, this::saveSync);
+            TaskScheduler.runSync(plugin, this::saveSync);
         } else {
             saveSync();
         }
@@ -61,7 +62,7 @@ public class EntityInfo {
         Entity entity = VMUtils.getEntity(shop.getEntityUUID());
         if (entity != null) {
             if (plugin.isEnabled()) {
-                Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> saveInfo(entity));
+                TaskScheduler.runAsync(plugin, () -> saveInfo(entity));
             } else {
                 saveInfo(entity);
             }

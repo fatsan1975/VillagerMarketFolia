@@ -1,0 +1,97 @@
+plugins {
+    id 'java'
+    id 'com.gradleup.shadow' version '9.2.2'
+}
+
+group = 'me.bestemor.villagermarket'
+version = '1.13.2-SNAPSHOT'
+
+def targetJava = 17
+
+java {
+    sourceCompatibility = JavaVersion.toVersion(targetJava)
+    targetCompatibility = JavaVersion.toVersion(targetJava)
+    withSourcesJar()
+}
+
+repositories {
+    mavenCentral()
+
+    maven { url = 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/' }
+    maven { url = 'https://jitpack.io' }
+    maven { url = 'https://repo.glaremasters.me/repository/towny/' }
+    maven { url = 'https://maven.enginehub.org/repo/' }
+    maven { url = 'https://repo.md-5.net/content/groups/public/' }
+    maven { url = 'https://repo.extendedclip.com/content/repositories/placeholderapi/' }
+    maven { url = 'https://repo.citizensnpcs.co/' }
+    maven { url = 'https://repo.byteflux.net/repository/public/' }
+    maven { url = 'https://repo.codemc.org/repository/maven-public/' }
+    maven { url = 'https://repo.papermc.io/repository/maven-public/' }
+}
+
+dependencies {
+    implementation platform('com.intellectualsites.bom:bom-1.18.x:1.18')
+
+    compileOnly 'org.spigotmc:spigot-api:1.20.1-R0.1-SNAPSHOT'
+
+    compileOnly('com.github.MilkBowl:VaultAPI:1.7') {
+        exclude group: 'org.bukkit', module: 'bukkit'
+    }
+
+    compileOnly('com.sk89q.worldguard:worldguard-bukkit:7.0.4') {
+        exclude group: 'org.bstats', module: 'bstats-bukkit'
+        exclude group: 'org.spigotmc', module: 'spigot-api'
+    }
+
+    compileOnly 'com.palmergames.bukkit.towny:towny:0.98.2.0'
+    compileOnly 'me.clip:placeholderapi:2.11.6'
+    compileOnly('net.citizensnpcs:citizens-main:2.0.42-SNAPSHOT') {
+        transitive = false
+    }
+    compileOnly 'com.github.angeschossen:LandsAPI:7.1.12'
+    compileOnly 'com.plotsquared:PlotSquared-Core'
+    compileOnly 'commons-io:commons-io:2.11.0'
+    compileOnly 'de.tr7zw:item-nbt-api-plugin:2.12.4'
+
+    implementation 'org.bstats:bstats-bukkit:3.0.0'
+    implementation('com.github.Bestem0r:BestemorCore:083a13f4fd') {
+        exclude group: 'org.yaml', module: 'snakeyaml'
+    }
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+    options.release.set(targetJava)
+}
+
+tasks.processResources {
+    filteringCharset = 'UTF-8'
+}
+
+tasks.shadowJar {
+    archiveClassifier.set('')
+
+    relocate 'org.bstats', 'net.bestemor.villagermarket.utils.bstats'
+    relocate 'net.bestemor.core', 'net.bestemor.villagermarket.utils.core'
+
+    dependencies {
+        exclude(dependency('org.spigotmc:.*'))
+        exclude(dependency('com.github.MilkBowl:VaultAPI:.*'))
+        exclude(dependency('com.sk89q.worldguard:worldguard-bukkit:.*'))
+        exclude(dependency('com.palmergames.bukkit.towny:towny:.*'))
+        exclude(dependency('me.clip:placeholderapi:.*'))
+        exclude(dependency('net.citizensnpcs:citizens-main:.*'))
+        exclude(dependency('com.github.angeschossen:LandsAPI:.*'))
+        exclude(dependency('com.plotsquared:PlotSquared-Core:.*'))
+        exclude(dependency('commons-io:commons-io:.*'))
+        exclude(dependency('de.tr7zw:item-nbt-api-plugin:.*'))
+    }
+}
+
+tasks.jar {
+    enabled = false
+}
+
+tasks.build {
+    dependsOn tasks.shadowJar
+}

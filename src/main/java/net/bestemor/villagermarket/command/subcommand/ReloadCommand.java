@@ -3,7 +3,7 @@ package net.bestemor.villagermarket.command.subcommand;
 import net.bestemor.core.command.ISubCommand;
 import net.bestemor.core.config.ConfigManager;
 import net.bestemor.villagermarket.VMPlugin;
-import org.bukkit.Bukkit;
+import net.bestemor.villagermarket.utils.TaskScheduler;
 import org.bukkit.command.CommandSender;
 
 import java.util.ArrayList;
@@ -26,7 +26,7 @@ public class ReloadCommand implements ISubCommand {
     public void run(CommandSender sender, String[] args) {
         sender.sendMessage(ConfigManager.getMessage("messages.reloaded"));
 
-        Bukkit.getScheduler().runTaskAsynchronously(plugin, plugin::saveLog);
+        TaskScheduler.runAsync(plugin, plugin::saveLog);
 
         plugin.reloadConfiguration();
         plugin.getShopManager().reloadAll();
