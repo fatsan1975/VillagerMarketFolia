@@ -34,17 +34,17 @@ public class ItemCommand implements ISubCommand {
     @Override
     public void run(CommandSender sender, String[] args) {
         if (args.length != 5 && args.length != 6) {
-            sender.sendMessage(ChatColor.RED + "Incorrect number of arguments!");
+            sender.sendMessage(ChatColor.RED + "Hatalı argüman sayısı!");
             sender.sendMessage(ChatColor.RED + "/vm item give <player> <shopsize> <storagesize> [amount]");
             return;
         }
         Player target = Bukkit.getPlayer(args[2]);
         if (target == null) {
-            sender.sendMessage(ChatColor.RED + "Could not find player: " + args[2]);
+            sender.sendMessage(ChatColor.RED + "Oyuncu bulunamadı: " + args[2]);
             return;
         }
         if ((!args[3].equals("infinite") && !args[4].equals("infinite")) && (!canConvert(args[3]) || !canConvert(args[4]))) {
-            sender.sendMessage(ChatColor.RED + "Invalid size: " + args[3] + " or " + args[4]);
+            sender.sendMessage(ChatColor.RED + "Geçersiz boyut: " + args[3] + " veya " + args[4]);
             return;
         }
         int amount = 1;
@@ -52,12 +52,12 @@ public class ItemCommand implements ISubCommand {
         int storageSize = (args[4].equals("infinite") ? 0 : Integer.parseInt(args[4]));
 
         if (storageSize < 0 || storageSize > 6 || shopSize < 0 || shopSize > 6) {
-            sender.sendMessage(ChatColor.RED + "Invalid shop/storage size!");
+            sender.sendMessage(ChatColor.RED + "Geçersiz dükkan/depo boyutu!");
             return;
         }
         if (args.length == 6) {
             if (!canConvert(args[5])) {
-                sender.sendMessage(ChatColor.RED + "Invalid amount: " + args[5]);
+                sender.sendMessage(ChatColor.RED + "Geçersiz miktar: " + args[5]);
                 return;
             }
             amount = Integer.parseInt(args[5]);
@@ -78,12 +78,12 @@ public class ItemCommand implements ISubCommand {
 
     @Override
     public String getDescription() {
-        return "Give shop spawn item";
+        return "Dükkan yumurtası verir";
     }
 
     @Override
     public String getUsage() {
-        return "<player> <shopsize> <storagesize> [amount]";
+        return "<oyuncu> <dukkan_boyutu> <depo_boyutu> [miktar]";
     }
 
     @Override

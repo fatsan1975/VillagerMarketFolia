@@ -4,6 +4,7 @@ import net.bestemor.core.config.ConfigManager;
 import net.bestemor.core.menu.Menu;
 import net.bestemor.villagermarket.VMPlugin;
 import net.bestemor.villagermarket.menu.*;
+import net.bestemor.villagermarket.utils.TaskScheduler;
 import net.bestemor.villagermarket.utils.VMUtils;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
@@ -138,20 +139,33 @@ public abstract class VillagerShop {
 
     public void setProfession(Villager.Profession profession) {
         Entity entity = VMUtils.getEntity(entityUUID);
-        if (plugin.isCitizensEnabled() && CitizensAPI.getNPCRegistry().isNPC(entity)) {
-            Entity spawned = plugin.getShopManager().spawnShop(entity.getLocation(), "player");
-            spawned.setCustomName(CitizensAPI.getNPCRegistry().getNPC(entity).getName());
-            try {
-                CitizensAPI.getNPCRegistry().getNPC(entity).destroy();
-            } catch (Exception ignore) {
-            }
-            setUUID(spawned.getUniqueId());
+        if (entity == null) {
+            return;
         }
 
-        Villager villagerObject = (Villager) VMUtils.getEntity(entityUUID);
-        if (villagerObject != null) {
-            villagerObject.setProfession(profession);
-        }
+        TaskScheduler.runAtEntity(plugin, entity, () -> {
+            Entity activeEntity = VMUtils.getEntity(entityUUID);
+            if (activeEntity == null) {
+                return;
+            }
+
+            if (plugin.isCitizensEnabled() && CitizensAPI.getNPCRegistry().isNPC(activeEntity)) {
+                Entity spawned = plugin.getShopManager().spawnShop(activeEntity.getLocation(), "player");
+                spawned.setCustomName(CitizensAPI.getNPCRegistry().getNPC(activeEntity).getName());
+                try {
+                    CitizensAPI.getNPCRegistry().getNPC(activeEntity).destroy();
+                } catch (Exception ignore) {
+                }
+                setUUID(spawned.getUniqueId());
+                activeEntity = spawned;
+            }
+
+            if (activeEntity instanceof Villager villagerObject) {
+                villagerObject.setProfession(profession);
+                entityInfo.capture(villagerObject);
+            }
+        }, () -> {
+        });
     }
 
     /**
@@ -243,28 +257,38 @@ public abstract class VillagerShop {
 
     public void setCitizensSkin(String skin) {
         Entity entity = VMUtils.getEntity(entityUUID);
-        if (entity != null) {
-            String name = entity.getCustomName();
-            if (CitizensAPI.getNPCRegistry().isNPC(entity)) {
-                name = CitizensAPI.getNPCRegistry().getNPC(entity).getName();
+        if (entity == null) {
+            return;
+        }
+
+        TaskScheduler.runAtEntity(plugin, entity, () -> {
+            Entity activeEntity = VMUtils.getEntity(entityUUID);
+            if (activeEntity == null) {
+                return;
+            }
+
+            String name = activeEntity.getCustomName();
+            if (CitizensAPI.getNPCRegistry().isNPC(activeEntity)) {
+                name = CitizensAPI.getNPCRegistry().getNPC(activeEntity).getName();
             }
             if (name == null || name.isBlank()) {
-                name = entity.getName();
+                name = activeEntity.getName();
             }
 
             NPC npc = CitizensAPI.getNPCRegistry().createNPC(EntityType.PLAYER, name);
-            npc.spawn(entity.getLocation());
+            npc.spawn(activeEntity.getLocation());
             npc.getOrAddTrait(LookClose.class).lookClose(true);
             npc.getOrAddTrait(SkinTrait.class).setSkinName(skin);
 
-            if (CitizensAPI.getNPCRegistry().isNPC(entity) && CitizensAPI.getNPCRegistry().getNPC(entity).isSpawned()) {
-                CitizensAPI.getNPCRegistry().getNPC(entity).destroy();
+            if (CitizensAPI.getNPCRegistry().isNPC(activeEntity) && CitizensAPI.getNPCRegistry().getNPC(activeEntity).isSpawned()) {
+                CitizensAPI.getNPCRegistry().getNPC(activeEntity).destroy();
             } else {
-                entity.remove();
+                activeEntity.remove();
             }
             setUUID(npc.getEntity().getUniqueId());
-        }
-
+            entityInfo.capture(npc.getEntity());
+        }, () -> {
+        });
     }
 
     public void sendStats(Player player) {
@@ -340,15 +364,28 @@ public abstract class VillagerShop {
     }
 
     public void setShopName(String customName) {
-        Entity entity = Bukkit.getEntity(entityUUID);
-        if (plugin.isCitizensEnabled() && CitizensAPI.getNPCRegistry().isNPC(entity)) {
-            CitizensAPI.getNPCRegistry().getNPC(entity).setName(customName);
-        } else if (entity != null) {
-            entity.setCustomName(customName);
-        }
         shopName = customName;
-        shopfrontHolder.closeAll();
-        shopfrontHolder.load();
+        entityInfo.setName(customName);
+
+        Entity entity = Bukkit.getEntity(entityUUID);
+        if (entity == null) {
+            return;
+        }
+
+        TaskScheduler.runAtEntity(plugin, entity, () -> {
+            Entity activeEntity = VMUtils.getEntity(entityUUID);
+            if (activeEntity == null) {
+                return;
+            }
+
+            if (plugin.isCitizensEnabled() && CitizensAPI.getNPCRegistry().isNPC(activeEntity)) {
+                CitizensAPI.getNPCRegistry().getNPC(activeEntity).setName(customName);
+            } else {
+                activeEntity.setCustomName(customName);
+            }
+            entityInfo.capture(activeEntity);
+        }, () -> {
+        });
     }
 
     public void checkDiscounts() {

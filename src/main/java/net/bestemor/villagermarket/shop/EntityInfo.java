@@ -1,11 +1,7 @@
 package net.bestemor.villagermarket.shop;
 
 import net.bestemor.villagermarket.VMPlugin;
-import net.bestemor.villagermarket.utils.TaskScheduler;
-import net.bestemor.villagermarket.utils.VMUtils;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.World;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Villager;
@@ -31,7 +27,7 @@ public class EntityInfo {
             double y = config.getDouble("entity.location.y");
             double z = config.getDouble("entity.location.z");
 
-            World world = Bukkit.getWorld(config.getString("entity.location.world"));
+            org.bukkit.World world = org.bukkit.Bukkit.getWorld(config.getString("entity.location.world"));
             if (world != null) {
                 this.location = new Location(world, x, y, z);
             }
@@ -39,11 +35,14 @@ public class EntityInfo {
     }
 
     public void save() {
-        if (plugin.isEnabled()) {
-            TaskScheduler.runSync(plugin, this::saveSync);
-        } else {
-            saveSync();
+        config.set("entity.name", name);
+        if (location == null || location.getWorld() == null) {
+            return;
         }
+        config.set("entity.location.x", location.getX());
+        config.set("entity.location.y", location.getY());
+        config.set("entity.location.z", location.getZ());
+        config.set("entity.location.world", location.getWorld().getName());
     }
 
     private boolean isProfession(String s) {
@@ -58,27 +57,27 @@ public class EntityInfo {
         return false;
     }
 
-    private void saveSync() {
-        Entity entity = VMUtils.getEntity(shop.getEntityUUID());
-        if (entity != null) {
-            if (plugin.isEnabled()) {
-                TaskScheduler.runAsync(plugin, () -> saveInfo(entity));
-            } else {
-                saveInfo(entity);
-            }
-
+    public void capture(Entity entity) {
+        if (entity == null) {
+            return;
         }
-    }
-
-    private void saveInfo(Entity entity) {
         if (entity instanceof Villager) {
             config.set("entity.profession", ((Villager) entity).getProfession().name());
         }
-        config.set("entity.name", entity.getName());
-        config.set("entity.location.x", entity.getLocation().getX());
-        config.set("entity.location.y", entity.getLocation().getY());
-        config.set("entity.location.z", entity.getLocation().getZ());
-        config.set("entity.location.world", entity.getLocation().getWorld().getName());
+        this.name = entity.getName();
+        this.location = entity.getLocation().clone();
+    }
+
+    public void setName(String name) {
+        if (name != null) {
+            this.name = name;
+        }
+    }
+
+    public void setLocation(Location location) {
+        if (location != null) {
+            this.location = location.clone();
+        }
     }
 
     public String getName() {

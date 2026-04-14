@@ -35,6 +35,7 @@ public class VMPlugin extends CorePlugin {
 
     @Override
     protected void onPluginEnable() {
+        ensureTurkishDefaults();
         setupEconomy();
 
         Metrics metrics = new Metrics(this, 8922);
@@ -44,7 +45,7 @@ public class VMPlugin extends CorePlugin {
         setupCommands();
 
         this.shopManager = new ShopManager(this);
-        TaskScheduler.runAsync(this, shopManager::load);
+        shopManager.load();
 
         this.playerListener = new PlayerListener(this);
         registerEvents();
@@ -71,7 +72,7 @@ public class VMPlugin extends CorePlugin {
 
     @Override
     protected String[] getLanguages() {
-        return new String[]{"en_US", "de_DE", "es_ES", "pt_BR", "zh_CN", "fr_FR"};
+        return new String[]{"en_US", "de_DE", "es_ES", "pt_BR", "zh_CN", "fr_FR", "tr_TR"};
     }
 
     @Override
@@ -81,8 +82,10 @@ public class VMPlugin extends CorePlugin {
 
     @Override
     protected void onPluginDisable() {
-        shopManager.closeAllShopfronts();
-        shopManager.saveAll();
+        if (shopManager != null) {
+            shopManager.closeAllShopfronts();
+            shopManager.saveAll();
+        }
         if (getConfig().getBoolean("auto_log")) saveLog();
     }
 
@@ -98,6 +101,30 @@ public class VMPlugin extends CorePlugin {
                 }
             }
         }
+    }
+
+    private void ensureTurkishDefaults() {
+        boolean changed = false;
+
+        String language = getConfig().getString("language", "en_US");
+        if (!"tr_TR".equalsIgnoreCase(language)) {
+            getConfig().set("language", "tr_TR");
+            changed = true;
+        }
+
+        String cancelInput = getConfig().getString("cancel", "cancel");
+        if ("cancel".equalsIgnoreCase(cancelInput)) {
+            getConfig().set("cancel", "iptal");
+            changed = true;
+        }
+
+        if (!changed) {
+            return;
+        }
+
+        saveConfig();
+        reloadConfiguration();
+        getChatListener().setCancelInput(ConfigManager.getString("cancel"));
     }
 
     private void setupCommands() {

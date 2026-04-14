@@ -23,7 +23,7 @@ public class ShopCommand implements CommandExecutor {
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String s, @NotNull String[] args) {
 
         if (!(sender instanceof Player player)) {
-            sender.sendMessage("Only players can use this command");
+            sender.sendMessage("Bu komutu yalnızca oyuncular kullanabilir.");
             return false;
         }
 
@@ -34,7 +34,7 @@ public class ShopCommand implements CommandExecutor {
 
         String id = ConfigManager.getString("default_admin_shop");
         if (id.isEmpty()) {
-            player.sendMessage("§cNo default admin shop set");
+            player.sendMessage("§cVarsayılan bir yönetici dükkanı ayarlanmamış.");
             return true;
         }
 

@@ -106,6 +106,6 @@ public class PlaceholderManager extends PlaceholderExpansion {
             }
         }
 
-        return "invalid syntax";
+        return "geçersiz sözdizimi";
     }
 }

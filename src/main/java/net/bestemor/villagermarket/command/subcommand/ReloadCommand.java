@@ -35,7 +35,7 @@ public class ReloadCommand implements ISubCommand {
 
     @Override
     public String getDescription() {
-        return "Reload plugin";
+        return "Plugini yeniden yükler";
     }
 
     @Override

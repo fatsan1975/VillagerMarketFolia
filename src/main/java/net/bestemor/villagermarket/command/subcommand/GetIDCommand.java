@@ -49,7 +49,7 @@ public class GetIDCommand implements ISubCommand {
 
     @Override
     public String getDescription() {
-        return "Get shop UUID";
+        return "Dükkan UUID bilgisini gösterir";
     }
 
     @Override

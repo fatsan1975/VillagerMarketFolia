@@ -51,7 +51,7 @@ public class EditVillagerMenu extends Menu {
                 player.sendMessage(ConfigManager.getMessage("messages.type_skin"));
 
                 plugin.getChatListener().addStringListener(player, (result) -> {
-                    TaskScheduler.runSync(plugin, () -> shop.setCitizensSkin(result));
+                    shop.setCitizensSkin(result);
                     player.sendMessage(ConfigManager.getMessage("messages.skin_set"));
                 });
 

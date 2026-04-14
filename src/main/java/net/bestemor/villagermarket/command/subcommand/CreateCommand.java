@@ -3,6 +3,7 @@ package net.bestemor.villagermarket.command.subcommand;
 import net.bestemor.core.command.ISubCommand;
 import net.bestemor.core.config.ConfigManager;
 import net.bestemor.villagermarket.VMPlugin;
+import net.bestemor.villagermarket.shop.VillagerShop;
 import net.bestemor.villagermarket.utils.VMUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -62,36 +63,36 @@ public class CreateCommand implements ISubCommand {
             return;
         }
         if (args.length < 2) {
-            player.sendMessage(ChatColor.RED + "Incorrect usage: Please specify shop type!");
-            player.sendMessage(ChatColor.RED + "Use /vm help for command description");
+            player.sendMessage(ChatColor.RED + "Hatalı kullanım: Lütfen dükkan tipini belirt.");
+            player.sendMessage(ChatColor.RED + "Komut açıklamaları için /vm help kullan.");
             return;
         }
         if (!args[1].equals("player") && !args[1].equals("admin")) {
-            player.sendMessage(ChatColor.RED + "Incorrect usage: Type must be Player or Admin!");
+            player.sendMessage(ChatColor.RED + "Hatalı kullanım: Tip `player` veya `admin` olmalı!");
             player.sendMessage(ChatColor.RED + "/vm create <type> <shopsize> [storagesize] [price] [time]");
             return;
         }
         switch (args[1]) {
             case "player":
                 if (args.length != 5 && args.length != 6) {
-                    player.sendMessage(ChatColor.RED + "Incorrect number of arguments!");
+                    player.sendMessage(ChatColor.RED + "Hatalı argüman sayısı!");
                     player.sendMessage(ChatColor.RED + "/vm create player <shopsize> <storagesize> <price> [time]");
                     return;
                 }
                 if ((!canConvert(args[2]) && !args[2].equals("infinite")) || (!canConvert(args[3]) && !args[3].equals("infinite")) || !canConvert(args[4])) {
-                    player.sendMessage(ChatColor.RED + "Incorrect usage!");
+                    player.sendMessage(ChatColor.RED + "Hatalı kullanım!");
                     player.sendMessage(ChatColor.RED + "/vm create player <shopsize> <storagesize> <price> [time]");
                     return;
                 }
                 break;
             case "admin":
                 if (args.length != 3) {
-                    player.sendMessage(ChatColor.RED + "Incorrect number of arguments!");
+                    player.sendMessage(ChatColor.RED + "Hatalı argüman sayısı!");
                     player.sendMessage(ChatColor.RED + "/vm create admin <shopsize>");
                     return;
                 }
                 if (!canConvert(args[2]) && !args[2].equals("infinite")) {
-                    player.sendMessage(ChatColor.RED + "Incorrect usage: Shopsize must be a number or infinite!");
+                    player.sendMessage(ChatColor.RED + "Hatalı kullanım: Dükkan boyutu sayı veya `infinite` olmalı!");
                     player.sendMessage(ChatColor.RED + "/vm create admin <shopsize>");
                     return;
                 }
@@ -104,17 +105,17 @@ public class CreateCommand implements ISubCommand {
         String duration = (args.length == 6 ? args[5] : "infinite");
 
         if (storageSize < 0 || storageSize > 6) {
-            player.sendMessage(ChatColor.RED + "Incorrect usage: Storage size must be between 1 and 6, or infinite!");
+            player.sendMessage(ChatColor.RED + "Hatalı kullanım: Depo boyutu 1 ile 6 arasında veya `infinite` olmalı!");
             player.sendMessage(ChatColor.RED + "/vm create player <shopsize> [storagesize] [price] [time");
             return;
         }
         if (shopSize < 0 || shopSize > 6) {
-            player.sendMessage(ChatColor.RED + "Incorrect usage: Shop size must be between 1 and 6, or infinite!");
+            player.sendMessage(ChatColor.RED + "Hatalı kullanım: Dükkan boyutu 1 ile 6 arasında veya `infinite` olmalı!");
             player.sendMessage(ChatColor.RED + "/vm create <type> <shopsize> [storagesize] [price] [time]");
             return;
         }
         if (cost < 0) {
-            player.sendMessage(ChatColor.RED + "Incorrect usage: Cost can't be less than 0!");
+            player.sendMessage(ChatColor.RED + "Hatalı kullanım: Ücret 0'dan küçük olamaz!");
             player.sendMessage(ChatColor.RED + "/vm create player <shopsize> [storagesize] [price] [time]");
             return;
         }
@@ -126,6 +127,10 @@ public class CreateCommand implements ISubCommand {
         }
 
         plugin.getShopManager().createShopConfig(entity.getUniqueId(), storageSize, shopSize, cost, type.toUpperCase(Locale.ROOT), duration);
+        VillagerShop shop = plugin.getShopManager().getShop(entity.getUniqueId());
+        if (shop != null) {
+            shop.getEntityInfo().capture(entity);
+        }
         player.playSound(player.getLocation(), ConfigManager.getSound("sounds.create_shop"), 1, 1);
     }
 
@@ -141,12 +146,12 @@ public class CreateCommand implements ISubCommand {
 
     @Override
     public String getDescription() {
-        return "Create new shop";
+        return "Yeni dükkan oluşturur";
     }
 
     @Override
     public String getUsage() {
-        return "<type> <shopsize> [storagesize] [price] [time]";
+        return "<tip(player/admin)> <dukkan_boyutu> [depo_boyutu] [fiyat] [sure]";
     }
 
     @Override
