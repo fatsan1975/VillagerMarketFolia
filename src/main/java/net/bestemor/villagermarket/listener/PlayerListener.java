@@ -22,6 +22,7 @@ import net.bestemor.villagermarket.VMPlugin;
 import net.bestemor.villagermarket.event.PlaceShopEggEvent;
 import net.bestemor.villagermarket.shop.PlayerShop;
 import net.bestemor.villagermarket.shop.VillagerShop;
+import net.bestemor.villagermarket.utils.TaskScheduler;
 import net.bestemor.villagermarket.utils.VMUtils;
 import net.citizensnpcs.api.CitizensAPI;
 import org.bukkit.Bukkit;
@@ -88,10 +89,10 @@ public class PlayerListener implements Listener {
 
         if (shop != null) {
             if (plugin.isCitizensEnabled()) {
-                if (!(event.getRightClicked() instanceof Player) && !CitizensAPI.getNPCRegistry().isNPC(event.getRightClicked())) {
+                if (!TaskScheduler.isFolia() && !(event.getRightClicked() instanceof Player) && !CitizensAPI.getNPCRegistry().isNPC(event.getRightClicked())) {
                     cachedEntities.put(event.getRightClicked().getUniqueId(), event.getRightClicked());
                 }
-            } else {
+            } else if (!TaskScheduler.isFolia()) {
                 cachedEntities.put(event.getRightClicked().getUniqueId(), event.getRightClicked());
             }
             event.setCancelled(true);
@@ -112,6 +113,9 @@ public class PlayerListener implements Listener {
 
     @EventHandler
     public void onMove(PlayerMoveEvent event) {
+        if (TaskScheduler.isFolia()) {
+            return;
+        }
         Player p = event.getPlayer();
         for (Entity e : cachedEntities.values()) {
             if (e.getWorld() != p.getWorld()) {
@@ -274,6 +278,7 @@ public class PlayerListener implements Listener {
         if (VMUtils.getEntity(entity.getUniqueId()) != null) {
             plugin.getShopManager().createShopConfig(entity.getUniqueId(), storageSize, shopSize, -1, "player", "infinite");
             PlayerShop playerShop = (PlayerShop) plugin.getShopManager().getShop(entity.getUniqueId());
+            playerShop.getEntityInfo().capture(entity);
             playerShop.setOwner(player);
         } else {
             Bukkit.getLogger().severe(ChatColor.RED + "[VillagerMarket] Unable to spawn Villager! Does WorldGuard deny mobs spawn?");

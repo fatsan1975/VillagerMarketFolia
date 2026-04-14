@@ -47,7 +47,7 @@ public class StatsCommand implements ISubCommand {
 
     @Override
     public String getDescription() {
-        return "Show shop statistics";
+        return "Dükkan istatistiklerini gösterir";
     }
 
     @Override

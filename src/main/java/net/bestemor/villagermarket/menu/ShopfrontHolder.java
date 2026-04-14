@@ -4,7 +4,6 @@ import net.bestemor.villagermarket.VMPlugin;
 import net.bestemor.villagermarket.shop.AdminShop;
 import net.bestemor.villagermarket.shop.ShopItem;
 import net.bestemor.villagermarket.shop.VillagerShop;
-import net.bestemor.villagermarket.utils.TaskScheduler;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
@@ -58,6 +57,7 @@ public class ShopfrontHolder {
     }
 
     private void loadItems() {
+        itemList.clear();
         ConfigurationSection section = shop.getConfig().getConfigurationSection("items_for_sale");
         if (section == null) {
             return;
@@ -85,25 +85,23 @@ public class ShopfrontHolder {
     }
 
     public void update() {
-        TaskScheduler.runAsync(plugin, () -> {
-            if (isInfinite) {
-                int updatedMidPages = getItemList().keySet().stream().mapToInt(v -> v).max().orElse(0) / 45;
-                if (updatedMidPages > midPages) {
-                    shopfronts.add(shopfronts.size(), new Shopfront(plugin, this, shop, shopfronts.size()));
-                }
-                if (updatedMidPages < midPages) {
-                    shopfronts.remove(shopfronts.size() - 1);
-                }
-                this.midPages = updatedMidPages;
+        if (isInfinite) {
+            int updatedMidPages = getItemList().keySet().stream().mapToInt(v -> v).max().orElse(0) / 45;
+            if (updatedMidPages > midPages) {
+                shopfronts.add(shopfronts.size(), new Shopfront(plugin, this, shop, shopfronts.size()));
             }
-            try {
-                List<Shopfront> shopfronts = new ArrayList<>(this.shopfronts);
-                shopfronts.forEach(Shopfront::update);
-            } catch (Exception e) {
-                Bukkit.getLogger().severe("An error occurred while updating shopfront " + shop.getEntityUUID().toString());
-                e.printStackTrace();
+            if (updatedMidPages < midPages && !shopfronts.isEmpty()) {
+                shopfronts.remove(shopfronts.size() - 1);
             }
-        });
+            this.midPages = updatedMidPages;
+        }
+        try {
+            List<Shopfront> shopfronts = new ArrayList<>(this.shopfronts);
+            shopfronts.forEach(Shopfront::update);
+        } catch (Exception e) {
+            Bukkit.getLogger().severe("An error occurred while updating shopfront " + shop.getEntityUUID().toString());
+            e.printStackTrace();
+        }
     }
 
 

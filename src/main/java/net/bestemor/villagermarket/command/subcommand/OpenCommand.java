@@ -32,7 +32,7 @@ public class OpenCommand implements ISubCommand {
     @Override
     public void run(CommandSender sender, String[] args) {
         if (args.length != 3) {
-            sender.sendMessage("§cIncorrect number of arguments.");
+            sender.sendMessage("§cHatalı argüman sayısı.");
             sender.sendMessage("§c/vm open <shop> <player>");
             return;
         }
@@ -41,18 +41,18 @@ public class OpenCommand implements ISubCommand {
         try {
             shopUUID = UUID.fromString(args[1]);
         } catch (IllegalArgumentException e) {
-            sender.sendMessage("§cInvalid UUID.");
+            sender.sendMessage("§cGeçersiz UUID.");
             return;
         }
         VillagerShop shop = plugin.getShopManager().getShop(shopUUID);
         if (shop == null) {
-            sender.sendMessage("§cShop not found.");
+            sender.sendMessage("§cDükkan bulunamadı.");
             return;
         }
 
         Player target = plugin.getServer().getPlayer(args[2]);
         if (target == null) {
-            sender.sendMessage("§cPlayer not found.");
+            sender.sendMessage("§cOyuncu bulunamadı.");
             return;
         }
 
@@ -61,11 +61,11 @@ public class OpenCommand implements ISubCommand {
 
     @Override
     public String getDescription() {
-        return "Opens specified shop for player.";
+        return "Belirtilen dükkanı oyuncu için açar";
     }
 
     @Override
     public String getUsage() {
-        return "<shop> <player>";
+        return "<dukkan_uuid> <oyuncu>";
     }
 }

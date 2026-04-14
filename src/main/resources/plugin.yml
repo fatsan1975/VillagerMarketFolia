@@ -3,7 +3,7 @@ main: net.bestemor.villagermarket.VMPlugin
 version: 1.13.2
 
 author: Bestem0r
-description: A plugin made by Bestem0r to create Villager Shops
+description: Bestem0r tarafindan yapilmis Villager Shop olusturma plugini
 api-version: 1.13
 folia-supported: true
 depend: [ Vault ]
@@ -24,21 +24,21 @@ softdepend:
   - UltraEconomy
 commands:
   vm:
-    description: List all Villager Market commands
+    description: Tum Villager Market komutlarini listeler
     usage: /vm help
     aliases:
       - villagermarket
   shop:
-    description: Open the default admin shop
+    description: Varsayilan yonetici dukkanini acar
     usage: /shop
 
 permissions:
   villagermarket.command.shop:
     default: op
-    description: Open the default admin shop
+    description: Varsayilan yonetici dukkanini acar
   villagermarket.admin:
     default: op
-    description: All VillagerMarket Permissions
+    description: Tum VillagerMarket izinleri
     children:
       villagermarket.adminshops: true
       villagermarket.command.create: true
@@ -60,64 +60,64 @@ permissions:
 
   villagermarket.adminshops:
     default: op
-    description: Edit Admin Shops
+    description: Yonetici dukkanlarini duzenler
   villagermarket.command.create:
     default: op
-    description: Create Villager Shops
+    description: Villager Shop olusturur
   villagermarket.command.item:
     default: op
-    description: Give Villager Shop item to other players
+    description: Diger oyunculara Villager Shop esyasi verir
   villagermarket.command.search:
     default: op
-    description: Search for nearby Villager Shops
+    description: Yakindaki Villager Shoplari arar
   villagermarket.command.stats:
     default: op
-    description: Get Villager Shop stats
+    description: Villager Shop istatistiklerini gosterir
   villagermarket.command.remove:
     default: op
-    description: Remove Villager Shops
+    description: Villager Shoplari kaldirir
   villagermarket.command.move:
     default: op
-    description: Move Villager Shops
+    description: Villager Shoplari tasir
   villagermarket.command.reload:
     default: op
-    description: Reload Villager Market
+    description: Villager Market'i yeniden yukler
   villagermarket.command.help:
     default: op
-    description: All Villager Market commands
+    description: Tum Villager Market komutlari
   villagermarket.command.expiredstorage:
     default: op
-    description: Open expired storage
+    description: Suresi dolmus depoyu acar
   villagermarket.command.getid:
     default: op
-    description: Get shop ID
+    description: Dukkan kimligini gosterir
   villagermarket.spy:
     default: op
-    description: Open other player's shop editors
+    description: Diger oyuncularin dukkan duzenleyicilerini acar
   villagermarket.change_name:
     default: op
-    description: Rename your shop
+    description: Dukkan adini degistirir
   villagermarket.use_spawn_item:
     default: op
-    description: Use shop spawn item
+    description: Dukkan spawn esyasini kullanir
   villagermarket.unlimited_shops:
     default: op
-    description: Unlimited Shops
+    description: Sinirsiz dukkan
   villagermarket.max_shops.<amount>:
     default: op
-    description: Set maximum shops
+    description: Maksimum dukkan sayisini ayarlar
   villagermarket.use_citizens:
     default: op
-    description: Turn your shop into an NPC
+    description: Dukkanini NPC'ye donusturur
   villagermarket.bypass_limit:
     default: op
-    description: Bypass admin shop limits
+    description: Yonetici dukkan limitlerini asar
   villagermarket.bypass_price:
     default: op
-    description: Buypass max price
+    description: Maksimum fiyat sinirini asar
   villagermarket.bypass_max_rent:
     default: op
-    description: Bypass max rent
+    description: Maksimum kira suresini asar
   villagermarket.set_trade_type:
     default: op
-    description: Allows usage of trade for items mode
+    description: Esya karsiligi takas modunu kullanmaya izin verir

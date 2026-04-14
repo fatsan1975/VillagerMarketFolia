@@ -138,8 +138,7 @@ public class EditShopMenu extends Menu {
                         .replace("%player%", player.getName())
                         .replace("%custom_name%", name) : name;
 
-                TaskScheduler.runSync(plugin, () -> shop.setShopName(customName));
-
+                shop.setShopName(customName);
                 player.sendMessage(ConfigManager.getMessage("messages.change_name_set").replace("%name%", name));
             });
         }));

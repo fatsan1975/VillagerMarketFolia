@@ -54,19 +54,19 @@ public class TrustedCommand implements ISubCommand {
         }
 
         if (args.length < 3) {
-            player.sendMessage(ChatColor.RED + "Incorrect number of arguments!");
+            player.sendMessage(ChatColor.RED + "Hatalı argüman sayısı!");
             player.sendMessage(ChatColor.RED + "/vm trusted <add/remove> <player>");
             return;
         }
 
         if (!args[1].equals("add") && !args[1].equals("remove")) {
-            player.sendMessage(ChatColor.RED + "Unknown subcommand: " + args[1]);
+            player.sendMessage(ChatColor.RED + "Bilinmeyen alt komut: " + args[1]);
             player.sendMessage(ChatColor.RED + "/vm trusted <add/remove> <player>");
             return;
         }
         Player target = Bukkit.getPlayer(args[2]);
         if (target == null) {
-            player.sendMessage(ChatColor.RED + "Could not find player: " + args[2]);
+            player.sendMessage(ChatColor.RED + "Oyuncu bulunamadı: " + args[2]);
             return;
         }
 
@@ -84,12 +84,12 @@ public class TrustedCommand implements ISubCommand {
 
     @Override
     public String getDescription() {
-        return "Remove/remove trusted";
+        return "Güvenilir oyuncu ekler veya kaldırır";
     }
 
     @Override
     public String getUsage() {
-        return "<add/remove> <player>";
+        return "<add/remove> <oyuncu>";
     }
 
     @Override

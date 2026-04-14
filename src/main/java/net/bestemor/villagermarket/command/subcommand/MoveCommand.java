@@ -4,10 +4,12 @@ import net.bestemor.core.command.ISubCommand;
 import net.bestemor.core.config.ConfigManager;
 import net.bestemor.villagermarket.VMPlugin;
 import net.bestemor.villagermarket.shop.VillagerShop;
+import net.bestemor.villagermarket.utils.TaskScheduler;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.Location;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -51,7 +53,7 @@ public class MoveCommand implements ISubCommand {
 
     @Override
     public String getDescription() {
-        return "Move shop: &6/vm move";
+        return "Dükkanı taşır";
     }
 
     @Override
@@ -100,7 +102,13 @@ public class MoveCommand implements ISubCommand {
             Entity entity = moveShop.get(event.getPlayer().getUniqueId());
 
             if (entity != null) {
-                entity.teleport(event.getClickedBlock().getLocation().add(0.5, 1, 0.5));
+                Location target = event.getClickedBlock().getLocation().add(0.5, 1, 0.5);
+                VillagerShop shop = plugin.getShopManager().getShop(entity.getUniqueId());
+                TaskScheduler.teleportEntity(plugin, entity, target, () -> {
+                    if (shop != null) {
+                        shop.getEntityInfo().setLocation(target);
+                    }
+                });
             }
             moveShop.remove(event.getPlayer().getUniqueId());
         }

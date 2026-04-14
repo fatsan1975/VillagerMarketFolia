@@ -46,7 +46,7 @@ public class ToggleRequirePermissionCommand implements ISubCommand {
 
     @Override
     public String getDescription() {
-        return "Toggle require permission";
+        return "İzin zorunluluğunu açıp kapatır";
     }
 
     @Override

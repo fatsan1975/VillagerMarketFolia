@@ -37,7 +37,7 @@ public class CloneCommand implements ISubCommand {
 
     @Override
     public String getDescription() {
-        return "Clone Villager Shop";
+        return "Villager Shop'u kopyalar";
     }
 
     @Override

@@ -37,18 +37,18 @@ public class SearchCommand implements ISubCommand {
         }
 
         if (args.length != 2) {
-            player.sendMessage(ChatColor.RED + "Incorrect usage: Specify radius!");
+            player.sendMessage(ChatColor.RED + "Hatalı kullanım: Bir yarıçap belirt.");
             player.sendMessage(ChatColor.RED + "/vm search <radius>");
             return;
         }
         if (!VMUtils.isInteger(args[1])) {
-            player.sendMessage(ChatColor.RED + "Incorrect usage: Radius must be a number!");
+            player.sendMessage(ChatColor.RED + "Hatalı kullanım: Yarıçap bir sayı olmalı!");
             player.sendMessage(ChatColor.RED + "/vm search <radius>");
             return;
         }
         double radius = Double.parseDouble(args[1]);
         if (radius > 10000) {
-            player.sendMessage(ChatColor.RED + "Radius can't be more than 10 000 blocks!");
+            player.sendMessage(ChatColor.RED + "Yarıçap 10.000 bloktan büyük olamaz!");
             return;
         }
         int result = 0;
@@ -58,11 +58,11 @@ public class SearchCommand implements ISubCommand {
             if (plugin.getShopManager().isShop(entity)) {
                 Location location = entity.getLocation();
                 TextComponent component = new TextComponent(ConfigManager.getMessage("messages.search_shop_info")
-                        .replace("%name%", entity.getCustomName() == null ? "Unknown" : entity.getCustomName())
+                        .replace("%name%", entity.getCustomName() == null ? "Bilinmiyor" : entity.getCustomName())
                         .replace("%location%", location.getBlockX() + " " + location.getBlockY() + " " + location.getBlockZ()));
 
                 component.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/tp " + location.getX() + " " + location.getY() + " " + location.getZ()));
-                component.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new Text("Click to teleport!")));
+                component.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new Text("Işınlanmak için tıkla!")));
                 shopInfo.add(component);
                 result++;
             }
@@ -73,12 +73,12 @@ public class SearchCommand implements ISubCommand {
 
     @Override
     public String getDescription() {
-        return "Search for nearby shops";
+        return "Yakındaki dükkanları arar";
     }
 
     @Override
     public String getUsage() {
-        return "<radius>";
+        return "<yaricap>";
     }
 
     @Override

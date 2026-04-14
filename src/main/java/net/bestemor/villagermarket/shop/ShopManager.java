@@ -258,8 +258,7 @@ public class ShopManager {
 
     public void reloadAll() {
         closeAllShopfronts();
-
-        TaskScheduler.runAsync(plugin, () -> {
+        TaskScheduler.runSync(plugin, () -> {
             saveAll();
             load();
         });
@@ -278,7 +277,7 @@ public class ShopManager {
      */
     private void beginSaveThread() {
         long interval = 20 * 60L * Math.max(1, ConfigManager.getInt("auto_save_interval"));
-        TaskScheduler.runAsyncTimer(plugin, () -> {
+        TaskScheduler.runSyncTimer(plugin, () -> {
             if (!plugin.isEnabled()) {
                 return;
             }
@@ -304,7 +303,7 @@ public class ShopManager {
     private void beginExpireThread() {
         long interval = 20L * ConfigManager.getInt("expire_check_interval");
 
-        TaskScheduler.runAsyncTimer(plugin, this::checkExpirations, 20L, interval);
+        TaskScheduler.runSyncTimer(plugin, this::checkExpirations, 20L, interval);
     }
 
     private void checkExpirations() {
@@ -322,7 +321,7 @@ public class ShopManager {
                 if (playerShop.hasExpired() && playerShop.hasOwner()) {
                     Entity entity = VMUtils.getEntity(playerShop.getEntityUUID());
                     if (entity != null) {
-                        TaskScheduler.runAtLocation(plugin, entity.getLocation(), playerShop::abandon);
+                        TaskScheduler.runAtEntity(plugin, entity, playerShop::abandon, playerShop::abandon);
                     } else {
                         TaskScheduler.runSync(plugin, playerShop::abandon);
                     }

@@ -103,17 +103,19 @@ public class Shopfront {
 
     private void loadItems() {
         items.clear();
+        Map<Integer, ShopItem> itemList = shop.getShopfrontHolder().getItemList();
         if (isInfinite) {
             int start = page * 45;
             int end = start + 44;
-            for (int slot : shop.getShopfrontHolder().getItemList().keySet()) {
+            for (Map.Entry<Integer, ShopItem> entry : itemList.entrySet()) {
+                int slot = entry.getKey();
                 if (slot < start || slot > end) {
                     continue;
                 }
-                items.put(slot - start, shop.getShopfrontHolder().getItemList().get(slot));
+                items.put(slot - start, entry.getValue());
             }
         } else {
-            items.putAll(shop.getShopfrontHolder().getItemList());
+            items.putAll(itemList);
         }
         Collection<ShopItem> shopItems = Collections.synchronizedCollection(items.values());
         try {
@@ -131,11 +133,12 @@ public class Shopfront {
         for (UUID uuid : customerInventories.keySet()) {
             Player p = Bukkit.getPlayer(uuid);
             if (p != null && customerInventories.get(uuid) != null) {
-                TaskScheduler.runSync(plugin, () -> {
-                    if (customerInventories.containsKey(uuid)) {
-                        customerInventories.get(uuid).setContents(getCustomerInventory(p).getContents());
+                TaskScheduler.runAtEntity(plugin, p, () -> {
+                    Inventory customerInventory = customerInventories.get(uuid);
+                    if (customerInventory != null) {
+                        customerInventory.setContents(getCustomerInventory(p).getContents());
                     }
-                });
+                }, () -> customerInventories.remove(uuid));
             }
         }
         if (!ConfigManager.getBoolean("disable_lore_toggle")) {
@@ -187,7 +190,7 @@ public class Shopfront {
     }
 
     private void updateEditorInventory() {
-        editorInventory = Bukkit.createInventory(null, size, getEditorTitle());
+        editorInventory.clear();
         for (Integer slot : items.keySet()) {
             ShopItem item = items.get(slot);
             if (item == null) {
@@ -200,21 +203,33 @@ public class Shopfront {
     }
 
     public void open(Player player, Type type) {
+        loadItems();
+        Inventory inventoryToOpen;
         switch (type) {
             case EDITOR:
-                player.openInventory(editorInventory);
+                if (editorInventory.getViewers().isEmpty()) {
+                    editorInventory = Bukkit.createInventory(null, size, getEditorTitle());
+                }
+                updateEditorInventory();
+                inventoryToOpen = editorInventory;
                 break;
             case CUSTOMER:
                 Inventory i = getCustomerInventory(player);
-                player.openInventory(i);
-                customerInventories.put(player.getUniqueId(), i);
+                inventoryToOpen = i;
                 break;
             case DETAILED:
-                player.openInventory(detailedInventory);
+                updateDetailedInventory();
+                inventoryToOpen = detailedInventory;
+                break;
+            default:
+                return;
         }
-        TaskScheduler.runSyncLater(plugin, () -> {
-            Bukkit.getPluginManager().registerEvents(new ClickListener(player, type), plugin);
-        }, 1L);
+        ClickListener listener = new ClickListener(player, type, inventoryToOpen);
+        Bukkit.getPluginManager().registerEvents(listener, plugin);
+        player.openInventory(inventoryToOpen);
+        if (type == Type.CUSTOMER) {
+            customerInventories.put(player.getUniqueId(), inventoryToOpen);
+        }
     }
 
     private void buildBottom(Inventory inventory) {
@@ -249,10 +264,12 @@ public class Shopfront {
         private Instant nextClick = Instant.now();
         private final Player player;
         private final Type type;
+        private final Inventory trackedInventory;
 
-        public ClickListener(Player player, Type type) {
+        public ClickListener(Player player, Type type, Inventory trackedInventory) {
             this.player = player;
             this.type = type;
+            this.trackedInventory = trackedInventory;
         }
 
         @SuppressWarnings("unused")
@@ -261,12 +278,30 @@ public class Shopfront {
             if (this.player != event.getWhoClicked()) {
                 return;
             }
+            if (event.getView().getTopInventory() != trackedInventory) {
+                return;
+            }
             if (event.getRawSlot() < 0) {
                 return;
             }
 
+            int topInventorySize = event.getView().getTopInventory().getSize();
+            boolean topInventoryClick = event.getRawSlot() < topInventorySize;
+            InventoryAction action = event.getAction();
+            boolean dangerousTransfer = action == InventoryAction.MOVE_TO_OTHER_INVENTORY
+                    || action == InventoryAction.COLLECT_TO_CURSOR
+                    || action == InventoryAction.HOTBAR_MOVE_AND_READD
+                    || action == InventoryAction.HOTBAR_SWAP
+                    || event.getClick() == ClickType.DOUBLE_CLICK;
+
+            if (topInventoryClick || dangerousTransfer) {
+                event.setCancelled(true);
+            }
+
             if (Instant.now().isBefore(nextClick)) {
-                player.sendMessage(ConfigManager.getMessage("messages.shopfront_cooldown"));
+                if (topInventoryClick || dangerousTransfer) {
+                    player.sendMessage(ConfigManager.getMessage("messages.shopfront_cooldown"));
+                }
                 return;
             }
             this.nextClick = Instant.now().plusMillis(plugin.getConfig().getInt("menus.shopfront.cooldown"));
@@ -314,12 +349,7 @@ public class Shopfront {
                 return;
             }
 
-            if (event.getAction() == InventoryAction.MOVE_TO_OTHER_INVENTORY) {
-                event.setCancelled(true);
-            }
-            if (event.getRawSlot() < event.getView().getTopInventory().getSize()) {
-                event.setCancelled(true);
-
+            if (topInventoryClick) {
                 int slot = event.getSlot() + page * 45;
                 ShopItem shopItem = shop.getShopfrontHolder().getItemList().get(slot);
 
@@ -359,7 +389,7 @@ public class Shopfront {
                         } else {
                             if (mode == ItemMode.COMMAND && shop instanceof AdminShop adminShop) {
                                 adminShop.buyCommand(player, shopItem);
-                                TaskScheduler.runAsync(plugin, Shopfront.this::update);
+                                TaskScheduler.runSync(plugin, Shopfront.this::update);
                                 return;
                             }
                             switch (mode) {
@@ -370,7 +400,7 @@ public class Shopfront {
                                     shop.sellItem(shopItem, shopItem.getAmount(), player);
                                     break;
                             }
-                            TaskScheduler.runAsync(plugin, Shopfront.this::update);
+                            TaskScheduler.runSync(plugin, Shopfront.this::update);
                         }
                         break;
                     case DETAILED:
@@ -387,6 +417,9 @@ public class Shopfront {
             if (event.getWhoClicked() != this.player) {
                 return;
             }
+            if (event.getView().getTopInventory() != trackedInventory) {
+                return;
+            }
             event.setCancelled(true);
         }
 
@@ -396,7 +429,12 @@ public class Shopfront {
             if (this.player != event.getPlayer()) {
                 return;
             }
-            customerInventories.remove(player.getUniqueId());
+            if (event.getInventory() != trackedInventory) {
+                return;
+            }
+            if (type == Type.CUSTOMER && customerInventories.get(player.getUniqueId()) == trackedInventory) {
+                customerInventories.remove(player.getUniqueId());
+            }
 
             HandlerList.unregisterAll(this);
         }

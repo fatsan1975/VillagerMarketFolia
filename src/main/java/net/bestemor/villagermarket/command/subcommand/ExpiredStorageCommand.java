@@ -76,7 +76,7 @@ public class ExpiredStorageCommand implements ISubCommand {
 
     @Override
     public String getDescription() {
-        return "Open expired shop storage";
+        return "Süresi dolmuş depo envanterini açar";
     }
 
     @Override

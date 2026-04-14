@@ -39,7 +39,7 @@ public class RemoveCommand implements ISubCommand {
 
     @Override
     public String getDescription() {
-        return "Remove shop";
+        return "Dükkanı kaldırır";
     }
 
     @Override

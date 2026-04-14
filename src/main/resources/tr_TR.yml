@@ -1,0 +1,729 @@
+#----------------------- Genel -----------------------#
+
+time:
+  seconds: "saniye"
+  minutes: "dakika"
+  minute: "dakika"
+  hours: "saat"
+  hour: "saat"
+  days: "gün"
+  day: "gün"
+  never: "süresiz"
+  indefinitely: "süresiz"
+  less_than_a_minute: "Bir dakikadan az"
+
+quantity:
+  free: "ücretsiz"
+  infinite: "sonsuz"
+  unlimited: "sınırsız"
+
+status:
+  available: "&aMüsait"
+  bought: "&cSatın Alındı"
+  no_owner: "&7Yok"
+
+villager:
+  name_admin: "&cYönetici Dükkanı"
+  name_available: "&aSatın alınabilir dükkan!"
+  name_taken: "&b%player%&7 adlı oyuncunun dükkanı"
+
+messages:
+  invalid_command_usage: "&cGeçersiz komut kullanımı! &e/vm help &ckullan."
+  reloaded: "&aPlugin yeniden yüklendi."
+  cancelled: "&cİşlem iptal edildi!"
+  not_number: "&cBir sayı yazmalısın!"
+  use_dot: "&cOndalık sayılarda virgül yerine nokta kullan!"
+  not_valid_range: "&cMiktar 1 ile 64 arasında olmalı!"
+  amount_successful: "&aMiktar başarıyla ayarlandı."
+  price_successful: "&aFiyat başarıyla ayarlandı."
+  negative_price: "&cFiyat negatif olamaz!"
+  add_successful: "&aÜrün başarıyla eklendi."
+  type_price: "&bLütfen ürün fiyatını sohbete yaz..."
+  type_amount: "&bLütfen almak/satmak istediğin miktarı sohbete yaz..."
+  type_cancel: "&bVeya iptal etmek için &c%cancel% &byaz"
+  sold_shop: "&bDükkan satıldı! Şimdi yeniden satın alınabilir."
+  not_enough_money: "&cBunu satın almak için yeterli paran yok!"
+  not_enough_stock: "&cŞu anda stokta yeterli ürün yok!"
+  remove_villager: "&cKaldırmak istediğin &bVillagerShop'a &csağ tıkla..."
+  no_villager_shop: "&cBu bir VillagerShop değil!"
+  villager_removed: "&cVillagerShop kaldırıldı!"
+  blacklisted: "&cBu ürün kara listede!"
+  owner_not_enough_money: "&cDükkan sahibinin yeterli parası yok!"
+  not_enough_in_inventory: "&cEnvanterinde yeterli ürün yok!"
+  bought_item_as_owner: "&b%player%&7, senden &b%amount%x %item%&7 ürünü &a%price%&7 karşılığında satın aldı."
+  sold_item_as_owner: "&b%player%&7, sana &b%amount%x %item%&7 ürününü &a%price%&7 karşılığında sattı."
+  change_name: "&bLütfen dükkan adını sohbete yaz..."
+  change_name_set: "&aİsim başarıyla ayarlandı: &r%name%&a."
+  must_be_menulore: "&cAlım/satım yapmak için tekrar &e&nmenü bilgisic moduna geç!"
+  cannot_buy_from_yourself: "&cKendinden ürün satın alamazsın!"
+  cannot_sell_to_yourself: "&cKendine ürün satamazsın!"
+  tax: "&a%tax% &7vergi olarak kesildi."
+  expired: "&cDükkanının süresi doldu! Depodaki eşyaları &e/vm expiredstorage &7ile alabilirsin."
+  move_villager: "&7Taşımak istediğin &bVillagerShop'a &7sağ tıkla."
+  move_villager_to: "&bVillager Shop'u &7taşımak istediğin bloğa tıkla."
+  max_rent_time: "&cSüre daha fazla uzatılamaz. Maksimum kira süresine ulaşıldı!"
+  search_result: "&7Yakında &b%amount% &7adet VillagerShop bulundu."
+  search_shop_info: "&7>> %name% &7konumu: &c%location%"
+  get_stats: "&7İstatistikleri görmek için bir &bVillagerShop'a &7sağ tıkla."
+  not_owner: "&cBu Villager Shop'un sahibi sen değilsin!"
+  type_limit_player: "&bSohbete satın alabileceğin maksimum miktarı yaz (&c0 &bsınırsız için)..."
+  type_limit_admin: "&bBu ürün için alış/satış limitini sohbete yaz (&c0 &bsınırsız için)..."
+  reached_sell_limit: "&cBu üründen daha fazla satamazsın!"
+  reached_buy_limit: "&cBu üründen daha fazla satın alamazsın!"
+  reached_command_limit: "&cBu komut için satın alma limitine ulaştın!"
+  money_left: "&a%amount% paran kaldı."
+  money_currently: "&aŞu anda %amount% paran var."
+  type_command: "&bLütfen '/' kullanmadan komutu yaz (%player% yer tutucusunu kullanabilirsin)..."
+  finish_process: "&cÖnce ürün ekleme işlemini bitir! (İptal etmek için 'iptal' yaz)"
+  collected_money: "&b&a%amount% &btoplandı."
+  not_playershop: "&cBu bir Oyuncu Dükkanı değil!"
+  add_trusted: "&7Güvenilir oyuncu eklemek için sahibi olduğun bir &bVillager Shop'a &7tıkla"
+  remove_trusted: "&7Güvenilir oyuncu kaldırmak için sahibi olduğun bir &bVillager Shop'a &7tıkla"
+  trusted_added: "&aOyuncu eklendi."
+  trusted_removed: "&cOyuncu kaldırıldı!"
+  region_no_access: "&cBu bölgeye erişimin yok!"
+  no_permission_adminshop: "&cBu Yönetici Dükkanı'nı kullanma iznin yok!"
+  no_permission_playershop: "&cBu Oyuncu Dükkanı'nı satın alma iznin yok!"
+  no_permission_change_name: "&cİsim değiştirme iznin yok!"
+  no_permission_command: "&cBu komutu kullanma iznin yok!"
+  no_permission_buy_shop: "&cDükkan satın alma iznin yok!"
+  no_permission_use_item: "&cBu eşyayı kullanma iznin yok!"
+  no_permission_citizens: "&cDükkanını NPC'ye dönüştürme iznin yok!"
+  no_permission_trade_item: "&cEşya karşılığı takas yapma iznin yok!"
+  max_shops: "&cZaten kullanılabilir &e%current%&c/&e%max%&c dükkanın var!"
+  get_id: "&7Kimliğini almak için bir &bVillager Shop'a &7sağ tıkla!"
+  id: "&7Varlık UUID'si: &b%id%"
+  type_skin: "&bLütfen skin adını sohbete yaz..."
+  skin_set: "&aSkin başarıyla ayarlandı."
+  no_expired_storage: "&cSüresi dolmuş bir depon yok!"
+  player_not_found: "&cOyuncu bulunamadı."
+  type_limit_cooldown: "&bLimit yenilenme süresini sohbete yaz (2h, 1d vb.) veya limitsiz için 'never' yaz..."
+  limit_cooldown_set: "&aTicaret limit yenilenmesi &e%time% &aolarak ayarlandı"
+  limits_cleared: "&cLimitler temizlendi!"
+  name_blacklisted: "&cBu dükkan adını kullanmana izin verilmiyor!"
+  max_item_price: "&cÜrün fiyatı çok yüksek! Lütfen daha düşük bir fiyatla tekrar dene."
+  shopfront_cooldown: "&cTekrar tıklamadan önce biraz bekle!"
+  max_name_length: "&cBu isim çok uzun! Maksimum isim uzunluğu %limit% karakterdir."
+  clone_shop: "&7Kopyalamak istediğin &bVillager Shop'a &7sağ tıkla."
+  shop_cloned: "&aVillager Shop başarıyla kopyalandı. &e/vm move &aile taşıyabilirsin."
+  set_size: "&7Boyutunu ayarlamak istediğin &bVillager Shop'a &7sağ tıkla."
+  size_set: "&aBoyut &e%size% &aolarak ayarlandı."
+  bought_item_as_customer: "&7&r%shop% &7dükkanından &b%amount%x %item%&7 ürünü &a%price% &7karşılığında satın aldın."
+  sold_item_as_customer: "&7&r%shop% &7dükkanına &b%amount%x %item%&7 ürünü &a%price% &7karşılığında sattın."
+  type_discount: "&bLütfen indirimi sohbete yaz (0-100)..."
+  type_time: "&bLütfen süreyi sohbete yaz (2h, 1d vb.)..."
+  not_valid_time: "&cGeçerli bir süre değil! Süre sayı ile başlamalı ve h, d veya m ile bitmeli."
+  discount_announcement: "&e%shop_name% &aadlı dükkanda &e%item% &aiçin şimdi &e%discount%% &aindirim var!"
+  toggle_require_permission: "&7İzin zorunluluğunu açıp kapatmak istediğin &bVillager Shop'a &7sağ tıkla."
+  require_permission_enabled: "&aİzin zorunluluğu açıldı. İzin: &e%permission%"
+  require_permission_disabled: "&cİzin zorunluluğu kapatıldı."
+
+stats_message:
+  - "&bVillagerShop istatistikleri:"
+  - "&7>> Satılan ürün: &a%items_sold%"
+  - "&7>> Alınan ürün: &a%items_bought%"
+  - "&7>> Kazanılan para: &a%money_earned%"
+  - "&7>> Harcanan para: &a%money_spent%"
+
+items:
+  back:
+    name: "&c&lGeri"
+    material: ARROW
+  filler:
+    name: ""
+    material: GRAY_STAINED_GLASS_PANE
+  next:
+    name: "&eSonraki"
+    material: FEATHER
+    lore:
+      - "&7Sonraki sayfa"
+  previous:
+    name: "&eÖnceki"
+    material: FEATHER
+    lore:
+      - "&7Önceki sayfa"
+
+menus:
+  buy_shop:
+    title: "&8Müsait dükkanı satın al"
+    size: 27
+    filler_slots: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26 ]
+    items:
+      shop_size:
+        material: CHEST
+        slot: 12
+        name: "&a%amount%&7 dükkan slotu"
+        lore:
+          - ""
+      storage_size:
+        material: WRITABLE_BOOK
+        slot: 14
+        name: "&a%amount%&7 depo slotu"
+        lore:
+          - ""
+      buy_shop:
+        material: EMERALD
+        slot: 13
+        name: "&aBu dükkanı satın al!"
+        lore:
+          - "&7Bu dükkanı &a%price% &7karşılığında satın almak için tıkla!"
+          - ""
+          - "&7Dükkan &b%time% &7boyunca"
+          - "&7senin olacak!"
+
+  edit_shop:
+    title: "&8Dükkanı düzenle"
+    size: 54
+    filler_slots: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 17, 18, 26, 27, 35, 36, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53 ]
+    items:
+      edit_shopfront:
+        material: WRITABLE_BOOK
+        slot: 21
+        slot_admin: 21
+        name: "&bVitrini düzenle"
+        lore:
+          - "&7Dükkanda satılacak ürünleri"
+          - "&7düzenlemek için tıkla"
+      preview_shop:
+        material: BOOK
+        slot: 23
+        slot_admin: 23
+        name: "&eDükkanı önizle"
+        lore:
+          - "&7Dükkan vitrininin önizlemesi için tıkla"
+      edit_storage:
+        material: CHEST
+        slot: 22
+        name: "&cDepoyu düzenle"
+        lore:
+          - "&7Dükkan deposunu düzenlemek için tıkla"
+      edit_villager:
+        material: VILLAGER_SPAWN_EGG
+        slot: 30
+        slot_admin: 30
+        name: "&eKöylüyü düzenle"
+        lore:
+          - "&7Köylünün mesleğini"
+          - "&7düzenlemek için tıkla"
+      change_name:
+        material: NAME_TAG
+        slot: 32
+        slot_admin: 32
+        name: "&eKöylü adını değiştir"
+        lore:
+          - "&7Köylünün adını değiştirmek için tıkla"
+      sell_shop:
+        material: FEATHER
+        slot: 31
+        name: "&cDükkanı sat/terk et"
+        lore:
+          - "&7Bu Villager Shop'u"
+          - "&7terk etmek için tıkla!"
+      collect_money:
+        material: GOLD_INGOT
+        slot: 41
+        name: "&aParayı topla"
+        lore:
+          - "&a%worth%$ &7toplamak için tıkla"
+      increase_time:
+        material: EMERALD
+        slot: 13
+        name: "&aKira süresini artır"
+        lore:
+          - "&7Dükkanının süresi şuna kadar dolacak: &e%expire%"
+          - ""
+          - "&7Kira süresini &b%time% &7kadar"
+          - "&a%price% &7karşılığında uzatmak için tıkla!"
+      enable_trade_notifications:
+        material: RED_TERRACOTTA
+        slot: 40
+        name: "&eTicaret bildirimleri&7: &cKapalı"
+        lore:
+          - "&7Ticaret bildirimlerini açmak için tıkla"
+      disable_trade_notifications:
+        material: LIME_TERRACOTTA
+        slot: 40
+        name: "&eTicaret bildirimleri&7: &aAçık"
+        lore:
+          - "&7Ticaret bildirimlerini kapatmak için tıkla"
+
+  shopfront:
+    title: "&8%shop%"
+    item_name: "&f%item_name% %mode%"
+    detail_suffix: "&8(Detaylar)"
+    cooldown: 500
+    items:
+      toggle_details:
+        name: "&eDetayları aç/kapat"
+        material: BOOK
+        lore:
+          - "&7>> Sol tık ile"
+          - "&eürün bilgisi &7ve"
+          - "&emenü bilgisi &7arasında geçiş yap!"
+          - ""
+          - "&7>> Sağ tık ile geri dön"
+    modes:
+      buy: "&8[&aAL&8]"
+      sell: "&8[&aSAT&8]"
+      buy_and_sell: "&8[&aAL&7/&aSAT&8]"
+      command: "&8[&eKOMUT&8]"
+      trade: "&8[&eTAKAS&8]"
+    discount_lore:
+      - ""
+      - "&7İndirim&f: &e%discount%%"
+      - "&7İndirim bitişi&f: &e%time%"
+    player_shop:
+      trade_lore:
+        - "&7Mod&f: %mode%"
+        - ""
+        - "&7Miktar&f: &e%amount%"
+        - "&7Fiyat&f: &a%price%"
+        - "&7Daha &b%available% &7adet takas yapabilirsin"
+        - ""
+        - "&7>> Takas için tıkla"
+      buy_lore:
+        - "&7Mod&f: %mode%"
+        - ""
+        - "&7Miktar&f: &e%amount%"
+        - "&7Fiyat&f: &a%price%"
+        - "&7Birim fiyat&f: &a%price_per_unit%"
+        - "&7Şu an stokta &b%stock% &7adet var"
+        - ""
+        - "&7>> Satın almak için tıkla"
+      sell_lore:
+        - "&7Mod&f: %mode%"
+        - ""
+        - "&7Miktar&f: &e%amount%"
+        - "&7Fiyat&f: &a%price%"
+        - "&7Daha &b%available% &7adet satabilirsin"
+        - ""
+        - "&7>> Satmak için tıkla"
+      buy_and_sell_lore:
+        - "&7Mod&f: %mode%"
+        - ""
+        - "&7Miktar&f: &e%amount%"
+        - "&7Alış fiyatı&f: &a%buy_price%"
+        - "&7Satış fiyatı&f: &a%sell_price%"
+        - "&7Şu an stokta &b%stock% &7adet var"
+        - "&7Daha &b%available% &7adet satabilirsin"
+        - ""
+        - "&7>> Seçmek için tıkla"
+    admin_shop:
+      buy_and_sell_lore:
+        - "&7Mod&f: %mode%"
+        - ""
+        - "&7Miktar&f: &e%amount%"
+        - "&7Alış fiyatı&f: &a%buy_price%"
+        - "&7Satış fiyatı&f: &a%sell_price%"
+        - "%limit_lore%"
+        - ""
+        - "&7>> Sol tık ile satın al"
+        - "&7>> Seçmek için tıkla"
+      trade_lore:
+        - "&7Mod&f: %mode%"
+        - ""
+        - "&7Miktar&f: &e%amount%"
+        - "&7Fiyat&f: &a%price%"
+        - "%limit_lore%"
+        - ""
+        - "&7>> Takas için tıkla"
+      sell_lore:
+        - "&7Mod&f: %mode%"
+        - ""
+        - "&7Miktar&f: &e%amount%"
+        - "&7Fiyat&f: &a%price%"
+        - "%limit_lore%"
+        - ""
+        - "&7>> Satmak için tıkla"
+      buy_lore:
+        - "&7Mod&f: %mode%"
+        - ""
+        - "&7Miktar&f: &e%amount%"
+        - "&7Fiyat&f: &a%price%"
+        - "%limit_lore%"
+        - ""
+        - "&7>> Satın almak için tıkla"
+      command_lore:
+        - "&7Mod&f: %mode%"
+        - ""
+        - "&7Miktar&f: &e%amount%"
+        - "&7Fiyat&f: &a%price%"
+        - "%limit_lore%"
+        - ""
+        - "&7>> Komutu satın almak için tıkla"
+      buy_limit_lore:
+        - ""
+        - "&7Alındı: (&e%bought%&7/&e%limit%&7)"
+        - "&7Sıfırlanmasına: &e%reset%"
+      sell_limit_lore:
+        - ""
+        - "&7Satıldı: (&e%bought%&7/&e%limit%&7)"
+        - "&7Sıfırlanmasına: &e%reset%"
+      buy_and_sell_limit_lore:
+        - ""
+        - "&7Alındı veya satıldı: (&e%bought%&7/&e%limit%&7)"
+        - "&7Sıfırlanmasına: &e%reset%"
+
+  edit_shopfront:
+    title: "&8Satılık ürün ekle"
+    item_name: "&f%item_name% %mode%"
+    modes:
+      buy: "&8[&aAL&8]"
+      sell: "&8[&aSAT&8]"
+      buy_and_sell: "&8[&aSAT&7/&aAL&8]"
+      command: "&8[&eKOMUT&8]"
+      trade: "&8[&eTAKAS&8]"
+    player_shop:
+      trade_lore:
+        - "&7Mod&f: %mode%"
+        - ""
+        - "&7Miktar&f: &e%amount%"
+        - "&7Fiyat&f: &a%price%"
+        - "&7Daha &b%available% &7adet takas yapabilirsin"
+        - ""
+        - "&7>> Düzenlemek için tıkla"
+      sell_lore:
+        - "&7Mod&f: %mode%"
+        - ""
+        - "&7Miktar&f: &e%amount%"
+        - "&7Fiyat&f: &a%price%"
+        - "&7Şu an stokta &b%stock% &7adet var!"
+        - ""
+        - "&7>> Düzenlemek için tıkla"
+      buy_lore:
+        - "&7Mod&f: %mode%"
+        - ""
+        - "&7Miktar&f: &e%amount%"
+        - "&7Fiyat&f: &a%price%"
+        - "&7Daha &c%available% &7adet alabilirsin!"
+        - ""
+        - "&7>> Düzenlemek için tıkla"
+      buy_and_sell_lore:
+        - "&7Mod&f: %mode%"
+        - ""
+        - "&7Miktar&f: &e%amount%"
+        - "&7Alış fiyatı&f: &a%buy_price%"
+        - "&7Satış fiyatı&f: &a%sell_price%"
+        - "&7Daha &c%available% &7adet alabilirsin!"
+        - "&7Şu an stokta &b%stock% &7adet var!"
+        - ""
+        - "&7>> Düzenlemek için tıkla"
+    admin_shop:
+      standard_lore:
+        - "&7Mod&f: %mode%"
+        - ""
+        - "&7Miktar&f: &e%amount%"
+        - "&7Fiyat&f: &a%price%"
+        - "&7Oyuncu limiti&f: &a%limit%"
+        - ""
+        - "&7>> Düzenlemek için tıkla"
+
+  storage:
+    title: "&8Dükkan Deposu"
+
+  edit_villager:
+    title: "&8Köylüyü düzenle"
+    size: 36
+    citizens_item:
+      material: PLAYER_HEAD
+      slot: 31
+      name: "&eBunun yerine skin ayarla"
+      lore:
+        - "&7Bu dükkana oyuncu skini vermek için tıkla"
+    back_slot: 35
+    filler_slots: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 27, 28, 29, 30, 31, 32, 33, 34 ]
+    items:
+      armorer:
+        material: IRON_CHESTPLATE
+        slot: 9
+        name: "&7Zırh Ustası"
+      butcher:
+        material: PORKCHOP
+        slot: 10
+        name: "&cKasap"
+      cartographer:
+        material: MAP
+        slot: 11
+        name: "&bHaritacı"
+      cleric:
+        material: POTION
+        slot: 12
+        name: "&dRuhban"
+      farmer:
+        material: WHEAT
+        slot: 13
+        name: "&eÇiftçi"
+      fisherman:
+        material: COD
+        slot: 14
+        name: "&bBalıkçı"
+      fletcher:
+        material: FLETCHING_TABLE
+        slot: 15
+        name: "&eOkçu"
+      leatherworker:
+        material: LEATHER
+        slot: 16
+        name: "&cDerici"
+      librarian:
+        material: BOOK
+        slot: 17
+        name: "&6Kütüphaneci"
+      mason:
+        material: BRICK
+        slot: 18
+        name: "&cTaş Ustası"
+      nitwit:
+        material: PAPER
+        slot: 19
+        name: "&fSefil"
+      shepherd:
+        material: WHITE_WOOL
+        slot: 20
+        name: "&fÇoban"
+      toolsmith:
+        material: IRON_AXE
+        slot: 21
+        name: "&7Alet Ustası"
+      weaponsmith:
+        material: IRON_SWORD
+        slot: 22
+        name: "&7Silah Ustası"
+      none:
+        material: VILLAGER_SPAWN_EGG
+        slot: 23
+        name: "&cYok"
+      blacksmith:
+        material: ANVIL
+        slot: 9
+        name: "&7Demirci"
+      priest:
+        material: POTION
+        slot: 11
+        name: "&dRahip"
+      normal:
+        material: VILLAGER_SPAWN_EGG
+        slot: 12
+        name: "&cYok"
+
+  sell_shop:
+    title: "&8Emin misin?"
+    size: 27
+    filler_slots: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26 ]
+    items:
+      no_cancel:
+        material: RED_TERRACOTTA
+        slot: 14
+        name: "&cHayır, iptal et"
+      yes_sell:
+        material: LIME_TERRACOTTA
+        slot: 12
+        name: "&aEvet, dükkanı sat"
+        lore:
+          - "&7Dükkanı terk ettiğinde/sattığında"
+          - "&7harcadığın paranın &a%50"
+          - "&7kadarı, yani &a%amount%&7 sana verilir"
+          - ""
+      yes_remove:
+        material: LIME_TERRACOTTA
+        slot: 12
+        name: "&aEvet, dükkanı kaldır"
+        lore:
+          - "&7Bu işlem Villager Shop'u"
+          - "&ckaldırır &7ve sana yeni bir"
+          - "&7dükkan spawn yumurtası verir!"
+
+  edit_item:
+    title: "&8Ürünü Düzenle"
+    size: 54
+    item_slot: 4
+    filler_slots: [ 0, 1, 2, 3, 5, 6, 7, 8, 9, 17, 18, 26, 27, 35, 36, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53 ]
+    back_slot: 53
+    limit_cycle:
+      player: "&eOyuncu&7 | Sunucu"
+      server: "&7Oyuncu |&e Sunucu"
+    mode_cycle:
+      player_shop:
+        item_trade: "&eSat &7(Eşya karşılığı takas)"
+        sell: "&eSat &7| Al | Al & Sat"
+        buy: "&7Sat | &eAl &7| Al & Sat"
+        buy_and_sell: "&7Sat | Al | &eAl & Sat"
+      admin_shop:
+        item_trade: "&eSat &7(Eşya karşılığı takas)"
+        sell: "&eSat &7| Al | Al & Sat | Komut"
+        buy: "&7Sat | &eAl &7| Al & Sat | Komut"
+        command: "&7Sat | Al | Al & Sat | &eKomut"
+        buy_and_sell: "&7Sat | Al | &eAl & Sat &7| Komut"
+
+    items:
+      mode:
+        material: OAK_SIGN
+        slot: 22
+        name: "&eMod&7: %mode%"
+        lore:
+          - "&7Döngü için tıkla:"
+          - "%cycle%"
+      amount:
+        material: CHEST
+        slot: 21
+        name: "&eMiktar&7: &r%amount%"
+        lore:
+          - "&7Düzenlemek için tıkla"
+      price:
+        material: GOLD_INGOT
+        slot: 23
+        name: "&eFiyat&7: &r%price%"
+        lore:
+          - "&7Fiyatı düzenlemek için tıkla"
+          - ""
+          - "&7>> Para yerine"
+          - "&7eşya takası için eşya ile tıkla"
+        buy_and_sell_lore:
+          - "&7>> Alış fiyatı için sol tık"
+          - "&7>> Satış fiyatı için sağ tık"
+          - ""
+          - "&7>> Para yerine"
+          - "&7eşya takası için eşya ile tıkla"
+      delete:
+        material: BARRIER
+        slot: 49
+        name: "&cKaldır"
+        lore:
+          - "&7Ürünü &ckaldırmak &7için tıkla"
+      command:
+        material: COMMAND_BLOCK
+        slot: 31
+        name: "&eKomut"
+        lore:
+          - "&7Geçerli komut(lar):"
+          - "&7- &e%command%&7"
+          - ""
+          - "&7>> Eklemek için sol tık"
+          - "&7>> Sıfırlamak için sağ tık"
+      buy_limit:
+        material: FEATHER
+        slot: 31
+        name: "&eAlış Limiti&7: %limit%"
+        lore:
+          - "&7>> Düzenlemek için tıkla"
+      player_limit:
+        material: PLAYER_HEAD
+        slot: 30
+        name: "&eOyuncu Limiti&7: &f%limit%"
+        lore:
+          - "&7>> Döngü için sağ tık:"
+          - "%cycle%"
+          - ""
+          - "&7>> Düzenlemek için sol tık"
+      limit_cooldown:
+        material: CLOCK
+        slot: 32
+        name: "&eLimit Yenilenmesi&7: &f%cooldown%"
+        lore:
+          - "&7Sonraki limit sıfırlaması: &e%next%"
+          - ""
+          - "&7>> Süreyi düzenlemek için sol tık"
+          - "&7>> Limitleri &ctemizlemek &7için sağ tık"
+      discount:
+        material: EMERALD
+        slot: 13
+        name: "&eİndirim&7: &f%discount%%"
+        lore:
+          - "&7Bitiş: &e%discount_end%"
+          - ""
+          - "&7>> Düzenlemek için tıkla"
+      custom_amount_enabled:
+        material: LIME_TERRACOTTA
+        slot: 40
+        name: "&eÖzel miktar&7: &aAçık"
+        lore:
+          - "&7Özel miktarı kapatmak için tıkla"
+      custom_amount_disabled:
+        material: RED_TERRACOTTA
+        slot: 40
+        name: "&eÖzel miktar&7: &cKapalı"
+        lore:
+          - "&7Özel miktarı açmak için tıkla"
+
+  confirm_action:
+    title: "&8Emin misin?"
+    size: 27
+    filler_slots: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26 ]
+    items:
+      accept:
+        material: GREEN_TERRACOTTA
+        slot: 12
+        name: "&aEvet, onayla"
+      cancel:
+        material: RED_TERRACOTTA
+        slot: 14
+        name: "&cHayır, iptal et"
+
+  buy_item:
+    title_buy: "&8Ürün Satın Al"
+    title_sell: "&8Ürün Sat"
+    title_trade: "&8Ürün Takası"
+    title_command: "&8Komut Satın Al"
+    filler_slots: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 12, 14, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26 ]
+    back_slot: 26
+    size: 27
+    confirm_slot: 13
+    items:
+      increase_one:
+        material: LIME_TERRACOTTA
+        slot: 15
+        name: "&a1 artır"
+        lore:
+          - "&7Miktarı bir artırmak için tıkla"
+      increase_stack:
+        material: LIME_TERRACOTTA
+        slot: 16
+        amount: 64
+        name: "&aStack kadar artır"
+        lore:
+          - "&7Miktarı 64 artırmak için tıkla"
+      increase_max:
+        material: EMERALD_BLOCK
+        slot: 4
+        name: "&aMaksimuma çıkar"
+        lore:
+          - "&7Miktarı maksimuma çıkarmak için tıkla"
+      decrease_one:
+        material: RED_TERRACOTTA
+        slot: 10
+        name: "&c1 azalt"
+        lore:
+          - "&7Miktarı bir azaltmak için tıkla"
+      decrease_stack:
+        material: RED_TERRACOTTA
+        slot: 11
+        amount: 64
+        name: "&cStack kadar azalt"
+        lore:
+          - "&7Miktarı 64 azaltmak için tıkla"
+      toggle_sell:
+        material: BOOK
+        slot: 22
+        name: "&7Sat | &eAl"
+        lore:
+          - "&7Satış moduna geçmek için tıkla"
+      toggle_buy:
+        material: BOOK
+        name: "&eSat &7| Al"
+        slot: 22
+        lore:
+          - "&7Alış moduna geçmek için tıkla"
+
+  expired_storage:
+    title: "&8Süresi Dolmuş Depo"
+
+shop_item:
+  material: VILLAGER_SPAWN_EGG
+  name: "&b&lVillager Shop Oluştur!"
+  lore:
+    - "&aBu spawn yumurtasını &7yerleştirerek"
+    - "&7kendine ait bir"
+    - "&aVillager Shop &7oluştur!"
+    - ""
+    - "&7>> &aDükkan Boyutu&7: &c%shop_size%"
+    - "&7>> &aDepo Boyutu&7: &c%storage_size%"

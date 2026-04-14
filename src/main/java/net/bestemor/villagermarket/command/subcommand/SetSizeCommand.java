@@ -34,15 +34,15 @@ public class SetSizeCommand implements ISubCommand {
         if (sender instanceof Player player) {
 
             if (args.length != 3) {
-                player.sendMessage(ChatColor.RED + "Incorrect usage: Please specify storage or shopfront and a size.");
+                player.sendMessage(ChatColor.RED + "Hatalı kullanım: Lütfen `storage` veya `shopfront` ve bir boyut belirt.");
                 return;
             }
             if (!args[1].equals("storage") && !args[1].equals("shopfront")) {
-                player.sendMessage(ChatColor.RED + "Incorrect usage: Please specify storage or shopfront.");
+                player.sendMessage(ChatColor.RED + "Hatalı kullanım: `storage` veya `shopfront` belirt.");
                 return;
             }
             if (!sizes.contains(args[2])) {
-                player.sendMessage(ChatColor.RED + "Incorrect usage: Please specify a correct size.");
+                player.sendMessage(ChatColor.RED + "Hatalı kullanım: Geçerli bir boyut belirt.");
                 return;
             }
 
@@ -59,7 +59,8 @@ public class SetSizeCommand implements ISubCommand {
                 }
                 shop.save();
                 plugin.getShopManager().loadShop(shop.getFile());
-                player.sendMessage(ConfigManager.getMessage("messages.size_set").replace("%size%", action.size == 0 ? "infinite" : String.valueOf(action.size)));
+                String sizeLabel = action.size == 0 ? ConfigManager.getString("quantity.infinite") : String.valueOf(action.size);
+                player.sendMessage(ConfigManager.getMessage("messages.size_set").replace("%size%", sizeLabel));
 
             });
         }
@@ -67,12 +68,12 @@ public class SetSizeCommand implements ISubCommand {
 
     @Override
     public String getDescription() {
-        return "Set shop size or storage size";
+        return "Dükkan veya depo boyutunu ayarlar";
     }
 
     @Override
     public String getUsage() {
-        return "<shop|storage> <size>";
+        return "<shopfront|storage> <boyut>";
     }
 
     private record SetAction(String action, int size) {

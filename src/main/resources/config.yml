@@ -19,7 +19,7 @@ max_item_price: 1000000
 #Should activity log be saved when server/plugin restarts?
 auto_log: false
 #Chat input used to cancel actions
-cancel: "cancel"
+cancel: "iptal"
 #Should players be required to collect the earned money in the edit shop GUI?
 require_collect: false
 #Enable per-adminshop permission requirements. The required
@@ -36,7 +36,7 @@ disable_update_announce: false
 #Will disable the 'toggle lore' button for shopfronts
 disable_lore_toggle: false
 #Language to use
-language: en_US
+language: tr_TR
 #Enables placing shop eggs on non-solid blocks (E.g. slabs, grass, doors)
 enable_non_solid_placement: false
 #Maximum amount of items that can be sold in one transaction
